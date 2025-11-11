@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
-  "name": "platformio-library-template",
+  "name": "esp_can",
   "version": "0.1.0",
   "description": "",
   "keywords": [],
@@ -10,5 +10,5 @@
   },
   "frameworks": "*",
   "platforms": "*",
-  "headers": []
+  "headers": ["esp_can.hpp"]
 }
