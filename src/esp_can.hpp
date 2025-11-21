@@ -7,7 +7,8 @@
 class CanDriver {
     public:
     bool begin(long baudRate = 1E6, gpio_num_t tx = GPIO_NUM_27, gpio_num_t rx = GPIO_NUM_26);
-    bool send(uint32_t id, uint8_t data[8], uint8_t dlc);
+    bool sendStandard(uint16_t id, uint8_t data[8], uint8_t dlc);
+    bool sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc);
     void onReceive(void (*callback)(twai_message_t msg));
 
     private:
@@ -52,9 +53,28 @@ void CanDriver::onReceive(void (*callback)(twai_message_t msg)){
     rxCallback = callback;
 }
 
-bool CanDriver::send(uint32_t id, uint8_t data[8], uint8_t dlc) {
+bool CanDriver::sendStandard(uint16_t id, uint8_t data[8], uint8_t dlc) {
     twai_message_t msg = {
         .flags = 0,
+        .identifier = id,
+        .data_length_code = dlc,
+    };
+
+    for(int i = 0; i < dlc; i++) {
+        msg.data[i] = data[i];
+    }
+
+    esp_err_t ret = twai_transmit(&msg, pdMS_TO_TICKS(1000));
+    if (ret == ESP_OK) {
+      return true;
+    } else {
+      return false;
+    }
+}
+
+bool CanDriver::sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc) {
+    twai_message_t msg = {
+        .flags = TWAI_MSG_FLAG_EXTD,
         .identifier = id,
         .data_length_code = dlc,
     };
