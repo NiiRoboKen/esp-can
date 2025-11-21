@@ -6,7 +6,7 @@
 
 class CanDriver {
     public:
-    bool begin(long baudRate = 1E6, gpio_num_t tx = GPIO_NUM_27, gpio_num_t rx = GPIO_NUM_26);
+    bool begin(long baudRate, uint8_t tx, uint8_t rx);
     bool sendStandard(uint16_t id, uint8_t data[8], uint8_t dlc);
     bool sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc);
     void onReceive(void (*callback)(twai_message_t msg));
@@ -18,11 +18,11 @@ class CanDriver {
 };
 
 
-bool CanDriver::begin(long baudRate, gpio_num_t tx, gpio_num_t rx) {
+bool CanDriver::begin(long baudRate, uint8_t tx, uint8_t rx) {
     twai_general_config_t g_config = {
         .mode = TWAI_MODE_NORMAL,   // 通常モード
-        .tx_io = tx,
-        .rx_io = rx,
+        .tx_io = (gpio_num_t)tx,
+        .rx_io = (gpio_num_t)rx,
         .clkout_io = TWAI_IO_UNUSED,
         .bus_off_io = TWAI_IO_UNUSED,
         .tx_queue_len = 10,
