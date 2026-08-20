@@ -4,7 +4,7 @@
 
 class CanDriver {
     public:
-        bool begin(long baudRate, uint8_t tx, uint8_t rx);
+        bool begin(uint8_t tx, uint8_t rx, long baudrate = 1000E3);
         bool sendStandard(uint16_t id, uint8_t data[8], uint8_t dlc);
         bool sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc);
         void onReceive(void (*callback)(twai_message_t msg));

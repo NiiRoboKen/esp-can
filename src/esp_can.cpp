@@ -3,7 +3,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-bool CanDriver::begin(long baudRate, uint8_t tx, uint8_t rx) {
+bool CanDriver::begin(uint8_t tx, uint8_t rx, long baudrate = 1000E3) {
     twai_general_config_t g_config = {
         .mode = TWAI_MODE_NORMAL,   // 通常モード
         .tx_io = (gpio_num_t)tx,
@@ -18,7 +18,7 @@ bool CanDriver::begin(long baudRate, uint8_t tx, uint8_t rx) {
     };
 
     // 速度設定
-    twai_timing_config_t t_config = twaiTimingConfig(baudRate);
+    twai_timing_config_t t_config = twaiTimingConfig(baudrate);
     // フィルタ設定（全受信）
     twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
 
@@ -76,8 +76,8 @@ bool CanDriver::sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc) {
     }
 }
 
-twai_timing_config_t CanDriver::twaiTimingConfig(long baudRate) {
-    switch (baudRate)
+twai_timing_config_t CanDriver::twaiTimingConfig(long baudrate) {
+    switch (baudrate)
     {
     case (long)25E3:
         return TWAI_TIMING_CONFIG_25KBITS();
