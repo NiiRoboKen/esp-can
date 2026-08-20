@@ -1,22 +1,7 @@
-#pragma once
+#include "esp_can.hpp"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/twai.h"
-
-class CanDriver {
-    public:
-    bool begin(long baudRate, uint8_t tx, uint8_t rx);
-    bool sendStandard(uint16_t id, uint8_t data[8], uint8_t dlc);
-    bool sendExtended(uint32_t id, uint8_t data[8], uint8_t dlc);
-    void onReceive(void (*callback)(twai_message_t msg));
-
-    private:
-    twai_timing_config_t twaiTimingConfig(long baudRate);
-    static void rxTask(void* param);
-    void (*rxCallback)(twai_message_t msg) = nullptr;
-};
-
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 bool CanDriver::begin(long baudRate, uint8_t tx, uint8_t rx) {
     twai_general_config_t g_config = {
