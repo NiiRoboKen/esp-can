@@ -3,7 +3,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-bool CanDriver::begin(uint8_t tx, uint8_t rx, long baudrate = 1000E3) {
+bool CanDriver::begin(uint8_t tx, uint8_t rx, long baudrate) {
     twai_general_config_t g_config = {
         .mode = TWAI_MODE_NORMAL,   // 通常モード
         .tx_io = (gpio_num_t)tx,
