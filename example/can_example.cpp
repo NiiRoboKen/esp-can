@@ -15,7 +15,7 @@ void canCallback(twai_message_t msg) {
 }
 
 void setup() {
-  if(can.begin(1000E3, TX_PIN, RX_PIN)) {
+  if(can.begin(TX_PIN, RX_PIN)) {
     printf("OK\r\n");
   }
   can.onReceive(canCallback);
